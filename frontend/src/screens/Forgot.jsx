@@ -8,9 +8,8 @@ import { toast } from 'react-toastify';
 import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
 
-const LoginScreen = () => {
+const Forgot = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -28,9 +27,9 @@ const LoginScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            const res = await login({ email, password }).unwrap();
+            const res = await login({ email }).unwrap();
             dispatch(setCredentials({ ...res }));
-            navigate('/');
+            navigate('/new-password');
         } catch (err) {
             toast.error(err?.data?.message || err.error);
         }
@@ -38,7 +37,7 @@ const LoginScreen = () => {
 
     return (
         <FormContainer>
-            <h1>Sign In</h1>
+            <h1>Forgot Password</h1>
 
             <Form onSubmit={submitHandler}>
                 <Form.Group className="my-2" controlId="email">
@@ -51,31 +50,20 @@ const LoginScreen = () => {
                     ></Form.Control>
                 </Form.Group>
 
-                <Form.Group className="my-2" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    ></Form.Control>
-                </Form.Group>
-
                 <Button type="submit" variant="primary" className="mt-3">
-                    Sign In
+                    Send
                 </Button>
             </Form>
 
             {isLoading && <Loader />}
 
             <Row className="py-3">
-                <Link to="/forgot-password">Forgot password ?</Link>
                 <Col>
-                    New Customer? <Link to={'/register'}>Register</Link>
+                    Have a account? <Link to={'/login'}>Login</Link>
                 </Col>
             </Row>
         </FormContainer>
     );
 };
 
-export default LoginScreen;
+export default Forgot;
